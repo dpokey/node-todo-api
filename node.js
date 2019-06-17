@@ -49,5 +49,16 @@
 
     MongoDB crea por defecto los identificadores, pero nosotros tambien lo podemos especificar al momento de crear el documento especificando la propiedad __id:
 
+*/
+
+/* Mongoose */
+/* 
+    Mapeo Relacional
+    Hace que sea mas facil estructurar los datos
+    Permite hacer ciertos tipos de vallidacion pa usuarios, validacion de contraseñas.
+
+    Mongoose mantiene la conxion atravez del tiempo
+    Nunca va a realizar un query a la db antes de realizar la conexion a ella. esto lo hace poderoso ya que se encarga del orden de las ejecuciones 
+
     
 */
