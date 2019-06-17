@@ -37,7 +37,7 @@ MongoClient.connect('mongodb://localhost:27017/TodoApp', (error, client) => {
     
     // findOneAndDelete para eliminar un docuemnto, pero tambien devuelve el docuemnto borrado
     // este metodo a pesar de que varios documentos cumplan el filtro, solo borra el primero
-    // Se puede usar cuando se desea dehacer los cambios
+    // Se puede usar cuando se desea deshacer los cambios
     // 1er argumento: es el filtro que se va a tener que cumplir para borrar
     // Regularmente SI tiene mucho valor usar la promesa en este metodo porque te devuelve el elemento eliminado
     db.collection('Todos').findOneAndDelete({completed: false}).then((result) => {

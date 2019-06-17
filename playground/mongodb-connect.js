@@ -32,8 +32,8 @@ Si la conexion falla podemos escribir un mensaje, si la conexion es exitosa, pod
 Esta funcion recibe 2 argumentos
 
     1er argumento: error
-    2do argumento: objeto db que es el que podemos ejecuttar para escribir comandos de CRUD 
-    2do argumento update: objeto client ue es el que podemos ejecuttar para escribir comandos de CRUD*/
+    2do argumento: objeto client que es el que podemos ejecuttar para escribir comandos de CRUD 
+    2do argumento update: objeto client que es el que podemos ejecuttar para escribir comandos de CRUD*/
 
 MongoClient.connect('mongodb://localhost:27017/TodoApp', (error, client) => {
     if (error) {
