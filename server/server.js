@@ -1,29 +1,51 @@
 
 // Objetivos: Nos Conectamos a BD, creamos un Modelo, guardamos ese modelo
 
-// Requerimos la libreria mongoose
-const mongoose = require('mongoose');
+// Importacion de Liberias
+const express = require('express')
 
-// Somilar a la conexion con MongoClient, nos conectamos a la bd
-// 1er argumento: cadena de conexion
-// 2do argumento: { useNewUrlParser: true } indica que utilice el nuevo anilizador de url de mongo
-mongoose.connect('mongodb://localhost:27017/TodoApp')
+// Importacion de archivos locales
+// Creamos por destructuring una variable moongose para requerir mongoose con la conexion
+const {mongoose} = require('./db/mongoose')
 
-// Creamos un modelo
-// 1er argumento: Es el nombre de la cadena que voy a coincidir con el nombe de la variable
-// 2do argumento: Objeto Schema que va a definir las propiedades para el modelo, y dentro de las propiedades se van a definir un objeto que va a contener las diferentes opciones disponibles que deseamos especificar o validar
-const Todo = mongoose.model('Todo', {
-    text: {
-        type: String
-    },
-    completed: {
-        type: Boolean
-    },
-    completedAt: {
-        type: Number
-    }
+const {User} = require('./models/user')
+
+// Importamos las rutas para cada modelo
+var todos = require('./routes/todos')
+
+// Creamos una nueva aplicacion
+const app = express()
+
+// Creamos una constante que almacene un puerto
+const port = process.env.PORT || 3000
+
+// Definimos un middleware que registra un log por cada peticion
+app.use((req, res, next) => {
+    // Creamos una variable now que almacena la hora, instanciamos al objeto Date y ejecutamos su metodo toString para que lo muestre en un formatolegible y la mostramos por consola. adicionalmente mostramos el metodo de la invocacion y la url solicitada
+    let now = new Date().toString()
+    let log = `${now}: ${req.method} ${req.url}`
+    console.log(log)
+    next()
 })
 
+// Definimos un middleware para que parse el body que vienen en un metodo post como un objeto JSON
+app.use(express.json())
+
+// Definimos los midleware que usaran las rutas definidas
+// 1er argumento: ruta raiz por default. dentro del archivo ./routes/todos.js esta invocara a /
+// 2do argumento: variable que almacena la ruta del archivo
+app.use('/todos', todos)
+
+// Escuchamos en el puerto
+app.listen(port, () => {
+    console.log(`Started on port ${port}`)
+})
+
+
+/* Ejmplos Parte 1 : Guardamos directamente en la bd */
+/* ============================================================== */
+
+/* --------------------------------------------------------------
 // Creamos un nuevo Todo con la funcion constructora. Estamos creando una nueva funcion constructora de Todo
 // Toma un argumento que va a ser un objeto en el que podemos especificar alguna de estas propiedades
 const newTodo = new Todo({
@@ -38,7 +60,6 @@ newTodo.save().then((doc) => {
     console.log('Unable to save Todo', error)
 })
 
-
 const newTodo2 = new Todo({
     text: 'Mother fucker',
     completed: true,
@@ -48,3 +69,12 @@ const newTodo2 = new Todo({
 }, (error) => {
     console.log('Unable to save Todo', error)
 })
+
+const newUser = new User({
+    email: ''
+}).save().then(doc => console.log('Saved User', doc), error => console.log('Unable to save User', error))
+-------------------------------------------------------------- */
+
+/* Ejmplos Parte 2 */
+/* ============================================================== */
+

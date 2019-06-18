@@ -60,5 +60,25 @@
     Mongoose mantiene la conxion atravez del tiempo
     Nunca va a realizar un query a la db antes de realizar la conexion a ella. esto lo hace poderoso ya que se encarga del orden de las ejecuciones 
 
-    
+    Mongoose Validators
+    ----------------------
+    Permite hacer validaciones en el esquema del modelo definido
+    - Si un valor es requerido
+    - La longitud maxima y minima de un numero o cadena
+*/
+
+/* Postman */
+/* 
+
+*/
+
+/* Bobyparse Library */
+/* 
+    Es una libreria de JS que analiza el body de una solicitud post y la convierte en un objeto JSON
+    En la nueva version de express >=4.16.0 se puede usar directamente express.json() sin necesidad de instalar el body parser
+*/
+
+/* Router */
+/* 
+    Una Routerinstancia es un sistema completo de middleware y enrutamiento; por esta razón, a menudo se lo conoce como una "mini-aplicación".
 */
