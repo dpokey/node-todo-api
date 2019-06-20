@@ -78,3 +78,5 @@ const newUser = new User({
 /* Ejmplos Parte 2 */
 /* ============================================================== */
 
+// Exportamos la app para poder utilizarla en el archivo server.test.js
+module.exports = {app}
