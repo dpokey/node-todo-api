@@ -8,10 +8,9 @@ const express = require('express')
 // Creamos por destructuring una variable moongose para requerir mongoose con la conexion
 const {mongoose} = require('./db/mongoose')
 
-const {User} = require('./models/user')
-
 // Importamos las rutas para cada modelo
-var todos = require('./routes/todos')
+const todos = require('./routes/todos')
+const users = require('./routes/users')
 
 // Creamos una nueva aplicacion
 const app = express()
@@ -33,7 +32,7 @@ app.use(express.json())
 
 // Definimos los midleware que usaran las rutas definidas
 // 1er argumento: ruta raiz por default. dentro del archivo ./routes/todos.js esta invocara a /
-// 2do argumento: variable que almacena la ruta del archivo
+// 2do argumento: variable que almacena la ruta del archivo ./routes/todos.js
 app.use('/todos', todos)
 
 // Escuchamos en el puerto

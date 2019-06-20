@@ -17,7 +17,14 @@ router.use((req, res, next) => {
 // Puede crear controladores de ruta para una ruta de acceso mediante el uso de app.route (). Debido a que la ruta se especifica en una sola ubicación, la creación de rutas modulares es útil, ya que reduce la redundancia y los errores tipográficos.
 router.route('/')
     .get((req, res) => {
-        res.send('ala')
+        // Especificamos el metodo find() sin parametros, para que nos traiga todos los documentos
+        Todo.find().then((todos) => {
+            // Podriams especificar res.send(todos), pero de esta forma se enviaria un array de los elementos
+            // La mejor forma es enviar un objeto, al cual mas adelante le podriamos agregar mas datos, como el codigo de estado de respuesta, etc, etc
+            res.send({todos})
+        },(error) => {
+            res.status(400).send(error)
+        })
     })
     .post((req, res) => {
         console.log(req.body);
