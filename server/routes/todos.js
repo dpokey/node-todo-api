@@ -1,10 +1,10 @@
-
-
 // Importamos los modelos
 const {Todo} = require('../models/todo')
 
-/* El siguiente ejemplo crea un enrutador como módulo, carga una función de middleware en él, define algunas rutas y monta el módulo del enrutador en una ruta en la aplicación principal. */
+// Importamos ObjectID para validar el id
+const {ObjectID} = require('mongodb')
 
+/* El siguiente ejemplo crea un enrutador como módulo, carga una función de middleware en él, define algunas rutas y monta el módulo del enrutador en una ruta en la aplicación principal. */
 const express = require('express');
 const router = express.Router()
 
@@ -34,6 +34,25 @@ router.route('/')
             res.send(doc)
         }, (error) => {
             res.status(400).send(error)
+        })
+    })
+
+router.route('/:id')
+    .get((req, res) => {
+        const id = req.params.id
+
+        if (!ObjectID.isValid(id)) {
+            return res.status(404).send()
+        }
+
+        Todo.findById(id).then(todo => {
+            if (!todo) {
+                return res.status(404).send()
+            }
+            res.send({todo})
+        }).catch(e => {
+            console.log(e)
+            res.status(400).send()
         })
     })
 
