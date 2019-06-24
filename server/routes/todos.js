@@ -41,11 +41,13 @@ router.route('/:id')
     .get((req, res) => {
         const id = req.params.id
 
+        // Validamos si id es valido
         if (!ObjectID.isValid(id)) {
             return res.status(404).send()
         }
 
         Todo.findById(id).then(todo => {
+            // Validamos si id coincide con algun documento
             if (!todo) {
                 return res.status(404).send()
             }

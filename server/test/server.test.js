@@ -3,12 +3,16 @@ const expect = require('expect')
 
 const {app} = require('../server')
 const {Todo} = require('../models/todo')
+const {ObjectID} = require('mongodb')
 
 // Añadimos una matriz de objeto que va a ser precargada en la bd para las pruebas
-
+// Ya que necesitaremos conocer el id para la pruebas de /todos/:id y esto se genera automaticamente por mongodb
+// lo agregaremos nosotros previamente mediante el metodo ObjectID 
 const todos = [{
+    _id: new ObjectID(),
     text: 'First test todo'
 }, {
+    _id: new ObjectID(),
     text: 'Second test todo'
 }]
 
@@ -72,7 +76,7 @@ describe('POST /todos', () => {
     })
 })
 
-describe('GET /todos',() => {
+describe('GET /todos', () => {
     it('Should get all todos', (done) => {
         request(app)
             .get('/todos')
@@ -83,8 +87,35 @@ describe('GET /todos',() => {
             // Aqui no evaluamos nada en bd porque no se hace ninguna modificacion ahi
             .end(done)
     })
+})
 
-    
+describe('GET /todos/:id', () => {
+    it('Should return todo doc', (done) => {
+        request(app)
+            // el metodo toHexString convierte el objeto objectid en string
+            .get(`/todos/${todos[0]._id.toHexString()}`)
+            .expect(200)
+            .expect(res => {
+                expect(res.body.todo.text).toBe(todos[0].text)
+            })
+            .end(done)
+    })
+
+    it('Should return 404 if todo not found', (done) => {
+        const hexId = new ObjectID().toHexString()
+        request(app)
+            .get(`/todos/${hexId}`)
+            .expect(404)
+            .end(done)
+    })
+
+    it('Should return 404 for non-object ids', (done) => {
+        const id = 123
+        request(app)
+            .get(`/todos/${id}`)
+            .expect(404)
+            .end(done)
+    })
 })
 
 
