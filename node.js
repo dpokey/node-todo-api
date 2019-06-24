@@ -82,3 +82,39 @@
 /* 
     Una Routerinstancia es un sistema completo de middleware y enrutamiento; por esta razón, a menudo se lo conoce como una "mini-aplicación".
 */
+
+/* A tener en cuenta para configurar en HEROKU */
+/* 
+    En package.json se debe indicar mediante start, como heroku va a iniciar nuestra aplicacion
+
+    "scripts": {
+        "start": "node server/server.js",
+    }
+
+    Tambien se debe indicar la version de node que va a ultizar para ejecutar nuestro proyecto
+
+    "engines": {
+        "node": "10.11.0"
+    }
+
+    Por consola:
+    
+    heroku create
+    Creamos una aplicacion en heroku
+
+    heroku addons:create mongolab:sandbox
+    Agregamos el complemento para usar un mongodb hosteado en heroku
+    mongolab: es el nombre del complemento a instalar
+    sandbox: es el plan que deseamos usar (gratis)
+
+    heroku config
+    Para obtener todas las variables de configuracion de su aplicacion en heroku
+
+    El addon anterior creo una variable MONGODB_UNI que se va a utilizar en el archivo mongoose.js para establecer la conexion
+    mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/TodoApp', { useNewUrlParser: true }).then((connect) => {
+        console.log('Database connect: ')
+    }).catch(e => console.log('Database error connect: ', e))
+
+
+
+*/

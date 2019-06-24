@@ -16,7 +16,7 @@ const users = require('./routes/users')
 const app = express()
 
 // Creamos una constante que almacene un puerto
-const port = process.env.PORT || 3000
+app.set('port', process.env.PORT || 3000)
 
 // Definimos un middleware que registra un log por cada peticion
 app.use((req, res, next) => {
@@ -36,8 +36,8 @@ app.use(express.json())
 app.use('/todos', todos)
 
 // Escuchamos en el puerto
-app.listen(port, () => {
-    console.log(`Started on port ${port}`)
+app.listen(app.get('port'), () => {
+    console.log(`Started on port ${app.get('port')}`)
 })
 
 
