@@ -115,6 +115,12 @@
         console.log('Database connect: ')
     }).catch(e => console.log('Database error connect: ', e))
 
+    git push heroku master
+    Para confirmar los cambios
+    
+    heroku logs
+    Muestra los logs de su aplicacion en heroku
 
-
+    heroku open
+    Para abrir la url donde esta delplegada nuestra aplicacion de heroku
 */
