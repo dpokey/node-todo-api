@@ -102,6 +102,7 @@
     heroku create
     Creamos una aplicacion en heroku
 
+    ------------------------------------------------------
     heroku addons:create mongolab:sandbox
     Agregamos el complemento para usar un mongodb hosteado en heroku
     mongolab: es el nombre del complemento a instalar
@@ -109,6 +110,18 @@
 
     heroku config
     Para obtener todas las variables de configuracion de su aplicacion en heroku
+    ------------------------------------------------------
+    
+    /* Libreria dotenv */
+    
+    /*
+    Esto lo vamos a remplazar usando el modulo dotenv, el cual nos permite configurar un archivo en la raiz del proyecto .env donde colocaremos todas las variables de entorno
+
+    Luego en el archivo .gitignore vamos a agregar el archivo .env para que no sea considerado para ser enviado a github
+
+    El objetivo de esto es que las variables de entorno que contienen nuestros password, cadenas de conexion, claves API, no sean expuestas en un repositorio remoto
+
+    ------------------------------------------------------
 
     El addon anterior creo una variable MONGODB_UNI que se va a utilizar en el archivo mongoose.js para establecer la conexion
     mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/TodoApp', { useNewUrlParser: true }).then((connect) => {
@@ -123,4 +136,41 @@
 
     heroku open
     Para abrir la url donde esta delplegada nuestra aplicacion de heroku
+*/
+
+/* ¿Como configurar variable de entorno en heroku? */
+/* 
+    https://devcenter.heroku.com/articles/config-vars
+    https://es.stackoverflow.com/questions/200261/como-configurar-variable-de-entorno-en-heroku
+
+    Heroku te permite desde la terminal de linux ejecutar mas funcionalidades puedes visualizarla te invito a ejecutar el siguiente comando
+    heroku help
+
+    Para configurar las variable de entorno de nuestro proyecto en heroku, sigue los sigientes pasos:
+
+    Inicia tu logeo de tu cuenta y ingresa tus credenciales con
+    heroku login
+    
+    Te ubicas sobre tu proyecto o te clonas si no lo tienes
+    cd <Tu Proyecto> ó heroku git clone https://git.heroku.com/<Tu Proyecto>.git && cd <Tu Proyecto>
+    
+    ya listo para la configuracion de las variables de entorno
+    heroku config:set DB_HOST='escribe-tu-host' 
+    heroku config:set DB_USER='escribe-tu-user' 
+    heroku config:set DB_PASS='escribe-tu-pass' 
+    heroku config:set DB_NAME='escribe-tu-name' 
+    heroku config:set DB_CHARSET='escribe-tu-charset'
+    
+    para ver los valores asignado a las variable solo con
+    heroku config:get DB_HOST
+    
+    para remover los valores asignado a las variable solo con
+    heroku config:unset DB_HOST
+
+    Adicional a esto si quieres ver todas las variables que tienes configuradas lo puedes ver con
+    heroku run printenv
+    
+    con heroku run tu puedes ejecutar cualquier comando en el alojamiento de heroku y capturando la salida en tu terminal muy util para cualquier necesidad.
+
+
 */

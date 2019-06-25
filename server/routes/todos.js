@@ -48,10 +48,32 @@ router.route('/:id')
 
         Todo.findById(id).then(todo => {
             // Validamos si id coincide con algun documento
+            // Esto se realiza ya que si el id es valido pero no se encuentra, el metodo findById igual se ejecuta y no envia error, sino devuelve un null
             if (!todo) {
                 return res.status(404).send()
             }
             res.send({todo})
+            //catch capturara errores potenciales             
+        }).catch(e => {
+            console.log(e)
+            res.status(400).send()
+        })
+    })
+    .delete((req, res) => {
+        const id = req.params.id
+
+        // Validamos si id es valido        
+        if (!ObjectID.isValid(id)) {
+            return res.status(404).send()
+        }
+
+        Todo.findByIdAndDelete(id).then(todo => {
+            // Esto se realiza ya que si el id es valido pero no se encuentra, el metodo findByIdAndDelete igual se ejecuta y no envia error, sino devuelve un null
+            if (!todo) {
+                return res.status(404).send()
+            }
+            res.send({todo})
+            //catch capturara errores potenciales 
         }).catch(e => {
             console.log(e)
             res.status(400).send()

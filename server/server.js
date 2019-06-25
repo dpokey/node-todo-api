@@ -3,6 +3,7 @@
 
 // Importacion de Liberias
 const express = require('express')
+const dotenv = require('dotenv').config()
 
 // Importacion de archivos locales
 // Creamos por destructuring una variable moongose para requerir mongoose con la conexion
