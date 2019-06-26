@@ -171,6 +171,8 @@
     heroku run printenv
     
     con heroku run tu puedes ejecutar cualquier comando en el alojamiento de heroku y capturando la salida en tu terminal muy util para cualquier necesidad.
-
-
+*/
+/* lodash library */
+/* 
+    
 */

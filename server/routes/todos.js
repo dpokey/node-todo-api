@@ -8,6 +8,8 @@ const {ObjectID} = require('mongodb')
 const express = require('express');
 const router = express.Router()
 
+const _ = require('lodash')
+
 // middleware that is specific to this router
 router.use((req, res, next) => {
     console.log('Welcome Todos')
@@ -78,6 +80,56 @@ router.route('/:id')
             console.log(e)
             res.status(400).send()
         })
+    })
+    .patch((req, res) => {
+        const id = req.params.id
+        // Crearemos una variable body
+        // Aqui usaremos el metodo pick de la libreria lodash. 
+        // Esto es debido a que el usuario podria enviar algunos parametros que no deseamos que ellos puedan actualizar, como por ejemplo la propiedad completed
+        
+        // 1er argumento: req.body (objeto a analizar)
+        // 2do argumento: conjunto de propiedades que desea extraer de ese objeto
+        // Metodo pick permite extraer (si existen) un conjunto de propiedades de un objeto, aqui estamos extrayendo las unicas propiedades que el usuario puede actualizar y asignandolo a un nuevo objeto body
+        // pick en otras palabras, intercepta propiedades
+        // la variable body tiene un subconjunto de cosas que el usuario paso a nosotros
+        const body = _.pick(req.body, ['text', 'completed'])
+
+        // Logica de validacion
+        // Validamos si id es valido        
+        if (!ObjectID.isValid(id)) {
+            return res.status(404).send()
+        }
+
+        // Validamos body.completed
+        if (_.isBoolean(body.completed) && body.completed) {
+            // Aqui modificamos el nuevo objeto body que solo tiene lo que interceptamos
+            // getTima() obtiene un sello de tiempo en javascript
+            // Este es el numero de milisegundos desde la medianoche del 1er enero de 1970
+            // Un valor en positivo, es el numero de milisegundos desde esa fecha y en negativo es en el pasado de esa fecha
+            body.completedAt = new Date().getTime()
+        } else {
+            body.completed = false
+            // cuando se desea borrar un valor de una propiedad en bd solo igualarla a null
+            body.completedAt = null
+        }
+
+        // Actualizamos el documento
+        // findByIdAndUpdate Permite encontrar un docuemnto por su id y actualizarlo
+        // 1er argumento: es el filtro que se va a tener que cumplir para actualizar
+        // 2do argumento: Son los cambios reales que se desean hacer. Aqui usamos los Mongo Update Operators. Existen varios operadores para actualizacion. 
+        //      $set: Para establecer un campo de un valor dentro de un update
+        //      $inc: Incremento de un valor de un campo
+        // 3er argumento: opciones que se pueden definir: existen varias opciones
+        //      new: lo establecemos en true para que no devuelva el documento original. sino el modificado
+        // 4to argumento: es un callback function, pero se va a dejar de usar para usar las promesas como en los casos anteriores
+        Todo.findByIdAndUpdate(id, {$set: body}, {new: true}).then((todo) => {
+            // validamos si no lo encuentra
+            if (!todo) {
+                return res.status(404).send()
+            }
+
+            res.send({todo})
+        }).catch(e => res.status(404).send())
     })
 
 module.exports = router
