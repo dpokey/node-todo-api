@@ -118,4 +118,44 @@ describe('GET /todos/:id', () => {
     })
 })
 
+describe('DELETE /todos/:id', () => {
+    it('Should remove a todo', (done) => {
+        // el metodo toHexString convierte el objeto objectid en string
+        const hexId = todos[0]._id.toHexString()
 
+        request(app)
+            .delete(`/todos/${hexId}`)
+            .expect(200)
+            .expect(res => {
+                expect(res.body.todo._id).toBe(hexId)
+            })
+            // Para validar que se borro en base de datos
+            .end((error, res) => {
+                // Si hay error no hay necesidad de conectarse a bd
+                if (error) {
+                    return done(error)
+                }
+                // Validamos si id existe en bd
+                Todo.findById(hexId).then((todo) => {
+                    expect(todo).toNotExist()
+                    done()
+                }).catch((e) => done(e))
+            })
+    })
+
+    it('Should return 404 if todo not found', (done) => {
+        const hexId = new ObjectID().toHexString()
+        request(app)
+            .delete(`/todos/${hexId}`)
+            .expect(404)
+            .end(done)
+    })
+
+    it('Should return 404 if object id is invalid', (done) => {
+        const id = 123
+        request(app)
+            .delete(`/todos/${id}`)
+            .expect(404)
+            .end(done)
+    })
+})
