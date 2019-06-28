@@ -1,9 +1,12 @@
 
 // Objetivos: Nos Conectamos a BD, creamos un Modelo, guardamos ese modelo
 
+// Cargamos las variables de entorno
+const dotenvFlow = require('dotenv-flow').config()
+console.log(process.env.NODE_ENV)
+
 // Importacion de Liberias
 const express = require('express')
-const dotenv = require('dotenv').config()
 
 // Importacion de archivos locales
 // Creamos por destructuring una variable moongose para requerir mongoose con la conexion
@@ -17,7 +20,7 @@ const users = require('./routes/users')
 const app = express()
 
 // Creamos una constante que almacene un puerto
-app.set('port', process.env.PORT || 3000)
+app.set('port', process.env.PORT)
 
 // Definimos un middleware que registra un log por cada peticion
 app.use((req, res, next) => {
