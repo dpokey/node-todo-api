@@ -2,7 +2,7 @@
 // Objetivos: Nos Conectamos a BD, creamos un Modelo, guardamos ese modelo
 
 // Cargamos las variables de entorno
-const dotenvFlow = require('dotenv-flow').config()
+const dotenvFlow = require('dotenv-flow').config({path: './server/config'})
 console.log(process.env.NODE_ENV)
 
 // Importacion de Liberias
